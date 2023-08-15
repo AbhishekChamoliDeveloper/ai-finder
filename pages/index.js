@@ -3,6 +3,7 @@ import axios from "axios";
 import { motion } from "framer-motion";
 import { FiSearch } from "react-icons/fi";
 import { RiEmotionSadLine } from "react-icons/ri";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import Fuse from "fuse.js";
 import Link from "next/link";
 import Head from "next/head";
@@ -10,15 +11,19 @@ import Head from "next/head";
 const HomePage = ({ initialAIData }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [aiData, setAIData] = useState(initialAIData);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    setIsLoading(true);
     axios
       .get("/api/data")
       .then((response) => {
         setAIData(response.data);
+        setIsLoading(false);
       })
       .catch((error) => {
         console.error("Error fetching AI data:", error);
+        setIsLoading(false);
       });
   }, []);
 
@@ -34,6 +39,8 @@ const HomePage = ({ initialAIData }) => {
   const filteredAIs = searchQuery
     ? fuse.search(searchQuery).map((result) => result.item)
     : aiData;
+
+  const isAIQuery = searchQuery.toLowerCase().includes("ai");
 
   return (
     <Fragment>
@@ -57,18 +64,24 @@ const HomePage = ({ initialAIData }) => {
         <div className="container mx-auto px-4 text-center">
           <HeroSection />
           <SearchBar handleSearch={handleSearch} />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-            {filteredAIs.length > 0 ? (
-              filteredAIs.map((ai, index) => <AICard key={index} ai={ai} />)
-            ) : (
-              <div className="w-full flex flex-col items-center justify-center mt-8">
-                <RiEmotionSadLine className="text-gray-400 text-4xl mb-2" />
-                <p className="text-center text-gray-600 text-lg">
-                  No AI models match your criteria.
-                </p>
-              </div>
-            )}
-          </div>
+          {isLoading ? (
+            <div className="w-full flex flex-col items-center justify-center mt-16">
+              <AiOutlineLoading3Quarters className="text-blue-500 animate-spin text-6xl mb-2 font-bold" />
+            </div>
+          ) : filteredAIs.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+              {filteredAIs.map((ai, index) => (
+                <AICard key={index} ai={ai} />
+              ))}
+            </div>
+          ) : (
+            <div className="w-full flex flex-col items-center justify-center mt-16">
+              <RiEmotionSadLine className="text-gray-400 text-6xl mb-2" />
+              <p className="text-center text-gray-600 text-2xl">
+                No AI models match your criteria.
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </Fragment>
