@@ -47,6 +47,11 @@ const HomePage = ({ initialAIData }) => {
           name="keywords"
           content="AI models, AI tools, machine learning, artificial intelligence"
         />
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7241089753091832"
+          crossorigin="anonymous"
+        ></script>
       </Head>
       <div className="bg-gray-100 min-h-screen py-12">
         <div className="container mx-auto px-4 text-center">
