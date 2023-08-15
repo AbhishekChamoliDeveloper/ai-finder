@@ -49,22 +49,20 @@ const HomePage = ({ initialAIData }) => {
         />
       </Head>
       <div className="bg-gray-100 min-h-screen py-12">
-        <div className="container mx-auto text-center">
+        <div className="container mx-auto px-4 text-center">
           <HeroSection />
           <SearchBar handleSearch={handleSearch} />
-          <div className="flex items-center justify-center">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-              {filteredAIs.length > 0 ? (
-                filteredAIs.map((ai, index) => <AICard key={index} ai={ai} />)
-              ) : (
-                <div className="absolute inset-0 w-full flex flex-col items-center justify-center h-32 mt-8">
-                  <RiEmotionSadLine className="text-gray-400 text-4xl mb-2" />
-                  <p className="text-center text-gray-600 text-lg">
-                    No AI models match your criteria.
-                  </p>
-                </div>
-              )}
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+            {filteredAIs.length > 0 ? (
+              filteredAIs.map((ai, index) => <AICard key={index} ai={ai} />)
+            ) : (
+              <div className="w-full flex flex-col items-center justify-center mt-8">
+                <RiEmotionSadLine className="text-gray-400 text-4xl mb-2" />
+                <p className="text-center text-gray-600 text-lg">
+                  No AI models match your criteria.
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -74,7 +72,7 @@ const HomePage = ({ initialAIData }) => {
 
 const HeroSection = () => (
   <section className="text-center mt-12">
-    <h1 className="text-4xl font-bold text-gray-800 mb-4">
+    <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 mb-4">
       AI Finder: Discover the Perfect AI Tool
     </h1>
     <p className="text-gray-600">
@@ -97,7 +95,7 @@ const SearchBar = ({ handleSearch }) => {
       <div className="relative">
         <input
           type="text"
-          className="border rounded px-4 py-3 w-full md:w-96 text-gray-800 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="border rounded px-4 py-3 w-full md:w-96 lg:w-80 xl:w-96 text-gray-800 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
           placeholder="Search AI models, tools or anything..."
           value={searchInput}
           onChange={handleChange}
@@ -121,9 +119,11 @@ const AICard = ({ ai }) => (
       <img
         src={ai.image}
         alt={ai.name}
-        className="w-20 h-20 mx-auto mb-4 rounded-full"
+        className="w-16 h-16 md:w-20 md:h-20 mx-auto mb-4 rounded-full"
       />
-      <h2 className="text-2xl font-semibold text-gray-800">{ai.name}</h2>
+      <h2 className="text-xl md:text-2xl font-semibold text-gray-800">
+        {ai.name}
+      </h2>
       <p className="text-gray-600 mt-2">{ai.description}</p>
       <div className="mt-3">
         {ai.tags.map((tag) => (
